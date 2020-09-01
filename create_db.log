@@ -1,0 +1,99 @@
+
+-------
+31/43/2020 14:43:57
+-------
+
+select * from myschool.cmvalue
+
+ID	GROUPID	NAME	DESCRIPTION	ISACTIVE	created_date	created_user	last_updated_date	last_updated_user	
+1	1	1	Class 1	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+2	1	2	Class 2	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+3	1	3	Class 3	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+4	1	4	Class 4	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+5	1	5	Class 5	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+6	1	6	Class 6	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+7	1	7	Class 7	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+8	1	8	Class 8	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+9	1	9	Class 9	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+10	1	10	Class 10	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+11	2	A	Section A	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+12	2	B	Section B	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+13	2	C	Section C	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+14	2	D	Section D	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+15	2	E	Section E	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+16	3	PUBLIC	Public/Government Schools	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+17	3	PRIVATE	Private Schools	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+18	3	CHAIN	Chain of schools	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+19	4	STUDENT	STUDENT	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+20	4	TEACHER	TEACHER	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+21	4	PARENT	PARENT	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+22	4	ADMIN	ADMIN	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+23	4	HEADMASTER	HEADMASTER	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+24	5	TELUGU	TELUGU	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+25	5	HINDI	HINDI	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+26	5	ENGLISH	ENGISH	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+27	5	MATHS	MATHS	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+28	5	SCIENCE	SCIENCE	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+29	5	SOCIAL	SOCIAL	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+30	6	MALE	Male	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+31	6	FEMALE	Female	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+32	6	TRANSGENDER	Transgender	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+33	7	OC	Open/general Catagory	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+34	7	BC-A	Backward caste group A	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+35	7	BC-B	Backward caste group B	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+36	7	BC-C	Backward caste group C	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+37	7	BC-D	Backward caste group D	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+38	7	SC	Schaduled Caste	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+39	7	ST	Schaduled Tribe	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+40	7	MINORITY	Minority	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+41	8	HINDU	Hindu	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+42	8	MUSLIM	muslim	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+43	8	CHRISTIAN	Christian	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+44	9	P1	Period 1	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+45	9	P2	Period 2	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+46	9	P3	Period 3	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+47	9	P4	Period 4	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+48	9	P5	Period 5	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+49	9	P6	Period 6	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+50	9	P7	Period 7	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+51	9	P8	Period 8	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+52	9	BREAK	Break	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+53	9	LUNCH BREAK	Lunch Break	1	2020-04-02 14:58:15.0	Dileep	2020-04-02 14:58:15.0	Dileep	
+
+-------
+31/45/2020 14:45:19
+-------
+
+create table tutorials_tbl(
+   tutorial_id INT NOT NULL AUTO_INCREMENT,
+   tutorial_title VARCHAR(100) NOT NULL,
+   tutorial_author VARCHAR(40) NOT NULL,
+   submission_date DATE,
+   PRIMARY KEY ( tutorial_id )
+) 
+
+-------
+31/50/2020 14:50:57
+-------
+
+drop table tutorials_tbl 
+INSERT INTO `myschool`.`cmvalue`
+(`GROUPID`,`NAME`,`DESCRIPTION`,`ISACTIVE`, `created_date`,`last_updated_date`,`created_user`,`last_updated_user`)
+VALUES
+( (select id from cmgroup where name="PERIODS"),"TEA BREAK","TEA Break",true,"2020-04-02 14:58:15","2020-04-02 14:58:15","Dileep","Dileep" ) 
+
+-------
+31/08/2020 17:08:01
+-------
+
+create table tutorials_tbl(
+   tutorial_id INT NOT NULL AUTO_INCREMENT,
+   tutorial_title VARCHAR(100) NOT NULL,
+   tutorial_author VARCHAR(40) NOT NULL,
+   submission_date DATE,
+   PRIMARY KEY ( tutorial_id )
+) 
+INSERT INTO `myschool`.`cmvalue`
+(`GROUPID`,`NAME`,`DESCRIPTION`,`ISACTIVE`, `created_date`,`last_updated_date`,`created_user`,`last_updated_user`)
+VALUES
+( (select id from cmgroup where name="PERIODS"),"TEA1 BREAK","TEA1 Break",true,"2020-04-02 14:58:15","2020-04-02 14:58:15","Dileep","Dileep" ) 
