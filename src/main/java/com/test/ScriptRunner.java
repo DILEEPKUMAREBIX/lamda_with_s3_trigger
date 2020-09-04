@@ -119,20 +119,14 @@ public class ScriptRunner {
 	 * @param reader - the source of the script
 	 */
 	public void runScript(Reader reader) throws IOException, SQLException {
+		boolean originalAutoCommit = connection.getAutoCommit();
 		try {
-			boolean originalAutoCommit = connection.getAutoCommit();
-			try {
-				if (originalAutoCommit != this.autoCommit) {
-					connection.setAutoCommit(this.autoCommit);
-				}
-				runScript(connection, reader);
-			} finally {
-				connection.setAutoCommit(originalAutoCommit);
+			if (originalAutoCommit != this.autoCommit) {
+				connection.setAutoCommit(this.autoCommit);
 			}
-		} catch (IOException | SQLException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new RuntimeException("Error running script.  Cause: " + e, e);
+			runScript(connection, reader);
+		} finally {
+			connection.setAutoCommit(originalAutoCommit);
 		}
 	}
 
@@ -181,8 +175,6 @@ public class ScriptRunner {
 			if (!autoCommit) {
 				conn.commit();
 			}
-		} catch (IOException e) {
-			throw new IOException(String.format("Error executing '%s': %s", command, e.getMessage()), e);
 		} finally {
 			conn.rollback();
 			flush();
@@ -218,17 +210,7 @@ public class ScriptRunner {
 		println(command);
 
 		boolean hasResults = false;
-		try {
-			hasResults = statement.execute(command.toString());
-		} catch (SQLException e) {
-			final String errText = String.format("Error executing '%s' (line %d): %s", command,
-					lineReader.getLineNumber(), e.getMessage());
-			printlnError(errText);
-			System.err.println(errText);
-			if (stopOnError) {
-				throw new SQLException(errText, e);
-			}
-		}
+		hasResults = statement.execute(command.toString());
 
 		if (autoCommit && !conn.getAutoCommit()) {
 			conn.commit();
@@ -251,12 +233,7 @@ public class ScriptRunner {
 				println("");
 			}
 		}
-
-		try {
-			statement.close();
-		} catch (Exception e) {
-			// Ignore to workaround a bug in Jakarta DBCP
-		}
+		statement.close();
 	}
 
 	private String getDelimiter() {
@@ -264,7 +241,6 @@ public class ScriptRunner {
 	}
 
 	@SuppressWarnings("UseOfSystemOutOrSystemErr")
-
 	private void print(Object o) {
 		if (logWriter != null) {
 			logWriter.print(o);

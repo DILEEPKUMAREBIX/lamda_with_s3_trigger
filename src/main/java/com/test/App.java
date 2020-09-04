@@ -50,9 +50,12 @@ public class App implements RequestHandler<S3EventNotification, String> {
 	@Override
 	public String handleRequest(S3EventNotification s3Event, Context context) {
 		log.info("Lambda function is invoked:" + s3Event.toJson());
-		// AmazonSNSClient snsClient = (AmazonSNSClient)
-		// AmazonSNSClientBuilder.standard().build();
 		AmazonSNS snsClient = AmazonSNSClientBuilder.standard().withRegion(Regions.US_EAST_2).build();
+		AmazonS3 s3Client = new AmazonS3Client();
+		String srcBackup = "db-executed-backup";
+		String folderName = "";
+		String srcKey = "";
+		String desKey = "";
 
 		byte[] buffer = new byte[1024];
 		try {
@@ -60,10 +63,9 @@ public class App implements RequestHandler<S3EventNotification, String> {
 				S3EventNotificationRecord record = s3Event.getRecords().get(0);
 				/* for (S3EventNotificationRecord record : s3Event.getRecords()) { */
 				String srcBucket = record.getS3().getBucket().getName();
-				String srcBackup = "db-executed-backup";
 
 				// Object key may have spaces or unicode non-ASCII characters.
-				String srcKey = record.getS3().getObject().getKey().replace('+', ' ');
+				srcKey = record.getS3().getObject().getKey().replace('+', ' ');
 				srcKey = URLDecoder.decode(srcKey, "UTF-8");
 
 				// Detect file type
@@ -78,12 +80,11 @@ public class App implements RequestHandler<S3EventNotification, String> {
 					log.error("Skipping non-zip file " + srcKey + " with extension " + extension);
 					return "";
 				}
-//				System.out.println("Extracting zip file " + srcBucket + "/" + srcKey);
 
 				// Download the zip from S3 into a stream
-				AmazonS3 s3Client = new AmazonS3Client();
+
 				System.out.println("Copy started------------------");
-				String desKey = "Arch_" + System.currentTimeMillis() + "_" + srcKey;
+				desKey = "Arch_" + System.currentTimeMillis() + "_" + srcKey;
 				s3Client.copyObject(srcBucket, srcKey, srcBackup, desKey);
 				// s3Client.copyObject(srcBucket, srcKey, srcBackup, srcKey);
 				System.out.println("Copy ended------------------" + desKey);
@@ -120,7 +121,7 @@ public class App implements RequestHandler<S3EventNotification, String> {
 				zis.close();
 				log.info("unzipping ended and copied to backup");
 
-				String folderName = srcKey.replace(".zip", "");
+				folderName = srcKey.replace(".zip", "");
 				String dbConfFileName = folderName + "/Connect2SQLServer.conf";
 				String scriptOrderFileName = folderName + "/SQLExecutionOrder.conf";
 				System.out.println("Connect2SQLServer----------");
@@ -148,12 +149,15 @@ public class App implements RequestHandler<S3EventNotification, String> {
 				snsClient.publish(topicArn, "Scripts Exectuation Status is SUCCESS",
 						"Scripts Exectuation Status-SUCCESS");
 			}
-			return "Ok";
+			return "SUCCESS";
 		} catch (IOException | ClassNotFoundException | SQLException e) {
 			System.out.println("Error occured111");
 			snsClient.publish(topicArn, "Scripts Exectuation Status is FAILED", "Scripts Exectuation Status-FAILED");
 			e.printStackTrace();
-			throw new RuntimeException(e);
+			log.info("deleting unzipped folder and files from backup as there is Error");
+			deleteFile(s3Client, srcBackup, folderName + "/", srcKey);
+			s3Client.deleteObject(srcBackup, desKey);
+			return "FAILED";
 		}
 
 	}
@@ -189,36 +193,32 @@ public class App implements RequestHandler<S3EventNotification, String> {
 		ScriptRunner runner = new ScriptRunner(con, false, false);
 
 		for (int i = 0; i < scriptOrderContent.size(); i++) {
+			S3Object s3DBConfObject = s3Client
+					.getObject(new GetObjectRequest(srcBucket, folderName + "/" + scriptOrderContent.get(i)));
+			BufferedReader br = new BufferedReader(new InputStreamReader(s3DBConfObject.getObjectContent(), "UTF-8"));
 			try {
-				S3Object s3DBConfObject = s3Client
-						.getObject(new GetObjectRequest(srcBucket, folderName + "/" + scriptOrderContent.get(i)));
-				BufferedReader br = new BufferedReader(
-						new InputStreamReader(s3DBConfObject.getObjectContent(), "UTF-8"));
 				runner.runScript(br);
-
 				insertScriptStatus(con, "PASS", scriptOrderContent.get(i), i + 1);
-			} catch (Exception e) {
+				log.info("Executed script: " + scriptOrderContent.get(i));
+			} catch (IOException | SQLException e) {
 				insertScriptStatus(con, "FAIL", scriptOrderContent.get(i), i + 1);
+				throw e;
 			}
-			log.info("Executed script: " + scriptOrderContent.get(i));
 		}
 	}
 
-	public void insertScriptStatus(Connection con, String status, String scriptName, int scriptSeq) {
+	public void insertScriptStatus(Connection con, String status, String scriptName, int scriptSeq)
+			throws SQLException {
 		String sql = "INSERT INTO dbexecstatusperrel(SerialNo,ScriptName,ExecutionTime,ExecutedBy,ExeStatus) VALUES(?,?,?,?,?)";
 
-		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-			pstmt.setInt(1, scriptSeq);
-			pstmt.setString(2, scriptName);
-			Calendar calendar = Calendar.getInstance();
-			java.util.Date currentTime = calendar.getTime();
-			pstmt.setTimestamp(3, new Timestamp(currentTime.getTime()));
-			pstmt.setString(4, "DILEEP KUMAR");
-			pstmt.setString(5, status);
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-			log.info("Error while adding record to dbexecstatusperrel table : " + e.getMessage());
-		}
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, scriptSeq);
+		pstmt.setString(2, scriptName);
+		Calendar calendar = Calendar.getInstance();
+		java.util.Date currentTime = calendar.getTime();
+		pstmt.setTimestamp(3, new Timestamp(currentTime.getTime()));
+		pstmt.setString(4, "DILEEP KUMAR");
+		pstmt.setString(5, status);
+		pstmt.executeUpdate();
 	}
 }
